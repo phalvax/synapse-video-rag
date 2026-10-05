@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kb"
+version = "0.1.0"
+description = "Team 16 — turn Synchrone's recordings into searchable, verifiable knowledge"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+  "pydantic>=2.6",
+  "pyyaml>=6.0",
+  "python-dotenv>=1.0",
+  "openai>=1.40",      # client générique : Ollama, Dataiku LLM Mesh, autres fournisseurs
+  "rapidfuzz>=3.6",    # vérification des citations
+  "numpy>=1.26",
+  "truststore>=0.9",   # certificats Windows (réseaux qui interceptent HTTPS)
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6"]
+asr = ["faster-whisper>=1.1"]                                   # R2 — transcription
+index = ["chromadb>=0.5", "bm25s>=0.2", "sentence-transformers>=3"]  # R3 — index, BM25, reranker
+api = ["fastapi>=0.110", "uvicorn[standard]>=0.29", "python-multipart>=0.0.9"]  # R5 — backend
+docs = ["pypdf>=5", "pypdfium2>=4", "pillow>=10", "pytesseract>=0.3"]  # PDF, rendu, OCR
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+# Web App Dataiku du collègue, recopiée telle quelle (+ correctifs) : `app` y est injecté par Dataiku.
+extend-exclude = ["dataiku_kit/webapp"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.flake8-bugbear]
+# Query(...)/Depends(...) en défaut d'argument est l'idiome FastAPI, pas un bug (B008).
+extend-immutable-calls = ["fastapi.Query", "fastapi.Depends"]

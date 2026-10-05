@@ -1,0 +1,31 @@
+# Palier 2 — autre fournisseur compatible OpenAI (estimations / tests ponctuels)
+llm:
+  base_url: ${MARKET_BASE_URL:-https://example.invalid/v1}
+  api_key_env: MARKET_API_KEY
+  model: ${MARKET_LLM_MODEL:-REMPLACER}
+  temperature: 0
+  input_per_m: ${MARKET_LLM_INPUT_PER_M:-0}   # à renseigner depuis la page tarifs du fournisseur
+  output_per_m: ${MARKET_LLM_OUTPUT_PER_M:-0}
+
+embedding:
+  base_url: ${MARKET_BASE_URL:-https://example.invalid/v1}
+  api_key_env: MARKET_API_KEY
+  model: ${MARKET_EMBED_MODEL:-REMPLACER}
+  input_per_m: ${MARKET_EMBED_INPUT_PER_M:-0}
+
+transcription:
+  engine: faster-whisper
+  model_size: small
+  device: cpu
+  compute_type: int8
+  language: null
+  vad_filter: true
+
+retrieval:
+  top_k: 20
+  rerank_top_n: 5
+  abstain_threshold: 0.35
+  # Corpus actuel = 3 talks TED en anglais : questions FR traduites avant la recherche
+  # (reranker FR→EN : score médian 0,41 contre 0,90 en EN, mesuré le 24/09).
+  query_language: en
+  chunk_target_tokens: 400

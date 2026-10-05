@@ -1,0 +1,45 @@
+# Palier 1 — modèles déjà payés par Synchrone dans Dataiku (connexion challenge_llm)
+# Tarifs vérifiés ($/M tokens, entrée/sortie) : Luna 0.2/1.2 · Terra 2/12 · Sol 5/30 · Embedding v3 Small 0.02
+llm:
+  base_url: ${DSS_URL:-https://your-dataiku-instance}/public/api/projects/${DSS_PROJECT_KEY:-TEAM_16}/llms/openai/v1/
+  api_key_env: DSS_API_KEY
+  # IDs confirmés le 18/09 via GET /models (Evan) : gpt-5.6-luna / -terra / -sol
+  model: ${DSS_LLM_ID:-openai:challenge_llm:gpt-5.6-luna}
+  temperature: null        # GPT-5.6 peut refuser temperature != 1 : à tester
+  # Tarifs vérifiés : Luna par défaut. Terra : 2 / 12 · Sol : 5 / 30 (à changer avec DSS_LLM_ID)
+  input_per_m: ${DSS_LLM_INPUT_PER_M:-0.2}
+  output_per_m: ${DSS_LLM_OUTPUT_PER_M:-1.2}
+  # Sélectionnables par requête (POST /ask {"model": …}, liste : GET /models). Tarifs vérifiés.
+  models:
+    - {id: "openai:challenge_llm:gpt-5.6-luna", label: "GPT-5.6 Luna", input_per_m: 0.2, output_per_m: 1.2}
+    - {id: "openai:challenge_llm:gpt-5.6-terra", label: "GPT-5.6 Terra", input_per_m: 2, output_per_m: 12}
+    - {id: "openai:challenge_llm:gpt-5.6-sol", label: "GPT-5.6 Sol", input_per_m: 5, output_per_m: 30}
+
+embedding:
+  # Mesuré le 18/09 (Evan) : /embeddings sur cette route renvoie un 404 HTML générique de
+  # passerelle ("Dataiku instance not found"), pas une erreur JSON applicative comme pour un
+  # mauvais ID de modèle chat (400 JSON explicite) — /models ne liste d'ailleurs que les 3 LLM
+  # de chat, aucun modèle d'embedding. Semble structurellement indisponible en REST direct sur
+  # cette connexion : passer par la recette Dataiku « Embed dataset » / Knowledge Bank
+  # (dataiku_kit/) plutôt que par cet adapter. À confirmer avec le coach Dataiku (docs/LOG.md, 18/09).
+  base_url: ${DSS_URL:-https://your-dataiku-instance}/public/api/projects/${DSS_PROJECT_KEY:-TEAM_16}/llms/openai/v1/
+  api_key_env: DSS_API_KEY
+  model: ${DSS_EMBED_ID:-openai:challenge_llm:REMPLACER_PAR_ID_EMBEDDING}
+  input_per_m: 0.02        # Embedding v3 Small (vérifié)
+
+transcription:
+  engine: faster-whisper   # côté Dataiku : kernel py311_fasterwhisper (+ whisperx, pyannote)
+  model_size: large-v3-turbo  # WER TED mesuré : 2,0 % (small : 2,6 %) ; rapide sur GPU
+  device: auto               # GPU détecté → cuda/float16 ; sinon cpu/int8 (plus lent)
+  compute_type: auto
+  language: null
+  vad_filter: true
+
+retrieval:
+  top_k: 20
+  rerank_top_n: 5
+  abstain_threshold: 0.35
+  # Corpus actuel = 3 talks TED en anglais : questions FR traduites avant la recherche
+  # (reranker FR→EN : score médian 0,41 contre 0,90 en EN, mesuré le 24/09).
+  query_language: en
+  chunk_target_tokens: 400

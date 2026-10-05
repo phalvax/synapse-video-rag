@@ -1,0 +1,28 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Secrets et réglages locaux
+.env
+.claude/settings.local.json
+
+# Données : vidéos, audio, transcripts, index, modèles — jamais dans git
+
+
+# Front (Phase 7)
+node_modules/
+frontend/dist/
+frontend/*.tsbuildinfo
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+
+# Data (videos, transcripts, index, models) is never versioned
+data/

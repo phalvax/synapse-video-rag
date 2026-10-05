@@ -1,0 +1,40 @@
+# Palier 0 — 100 % gratuit (Ollama local ou Ollama Cloud, faster-whisper local)
+llm:
+  # Ollama Cloud : OLLAMA_BASE_URL=https://ollama.com/v1 + OLLAMA_API_KEY (bien plus rapide)
+  base_url: ${OLLAMA_BASE_URL:-http://localhost:11434/v1}
+  api_key_env: OLLAMA_API_KEY
+  # Mesuré le 17/09 sur CPU (prompt de 3 sources, ~1 650 tokens) : gemma3:4b répond en 85 s,
+  # qwen3:4b met 477 s (mode « thinking ») → gemma3 par défaut en local.
+  model: ${OLLAMA_LLM_MODEL:-gemma3:4b}
+  temperature: 0
+  input_per_m: 0           # gratuit ($ / M tokens)
+  output_per_m: 0
+  timeout_s: ${LLM_TIMEOUT_S:-600}   # LLM local sur CPU : lent
+
+embedding:
+  base_url: ${OLLAMA_BASE_URL:-http://localhost:11434/v1}
+  api_key_env: OLLAMA_API_KEY
+  model: ${OLLAMA_EMBED_MODEL:-bge-m3}
+  input_per_m: 0
+
+transcription:
+  engine: faster-whisper
+  # Décision du 17/09 (docs/log/01-ingestion.md) : turbo, car il corrige les noms propres.
+  # WER mesuré : turbo 2,0 % (RTF 0,32) · small 2,6 % (RTF 0,10, 3× plus rapide) sur CPU.
+  model_size: large-v3-turbo
+  device: cpu
+  compute_type: int8
+  language: null           # null = détection automatique
+  vad_filter: true
+
+retrieval:
+  top_k: 20
+  rerank_top_n: 5
+  # Calibré le 17/09 sur la courbe risque-couverture du golden set v0 (39 questions) :
+  # à 0.35 → 10/31 fausses abstentions ; à 0.10 → 4/31, abstentions correctes identiques (6/8).
+  # Petit échantillon, calibré et mesuré sur les mêmes questions : à revalider sur le golden set v1.
+  abstain_threshold: 0.10
+  # Corpus actuel = 3 talks TED en anglais : questions FR traduites avant la recherche
+  # (reranker FR→EN : score médian 0,41 contre 0,90 en EN, mesuré le 24/09).
+  query_language: en
+  chunk_target_tokens: 400

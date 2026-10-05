@@ -1,0 +1,17 @@
+id,type,lang,answerable,abstained,llm_calls,citations,citations_verified,moment_hit,indice_reponse,retrieval_score,latency_ms,input_tokens,output_tokens,cost_usd,note,answer
+P01,single_fact,en,True,True,2,0,0,False,0.0,0.980692446231842,42794,1692,124,0.0,abstention : aucune citation retrouvée mot pour mot dans les sources,
+P04,single_fact,fr,True,False,2,1,1,True,1.0,0.9353015422821045,46453,1688,173,0.0,,"Finding at 20 that one is less and less sure of who one is. Emerging at 30 from the wasteland of preparation into active life. Learning at 40 to close softly the doors to rooms I would not be coming back to. There I was. Of course, there we all are, Milton Glaser, the great graphic designer, whose beautiful visualizations you see here, and who today is 85, all those years a ripening and an [S1]"
+S02,single_fact,en,True,False,2,1,1,True,1.0,0.8976935744285583,44426,1776,128,0.0,,"Those who are diagnosed and treated at stage one have a five-year survival rate of nearly 100 percent, odds it decreased to just 22% if treated at stage 4. [S1]"
+S05,single_fact,fr,True,False,2,1,1,True,1.0,0.8379719853401184,53400,1734,105,0.0,,Les exosomes mesurent juste 30 à 150 nanomètres de diamètre. [S1]
+S07,single_fact,fr,True,True,1,0,0,False,0.0,0.08353141695261002,19381,73,12,0.0,abstention avant génération : score 0.08 < seuil 0.1,
+J02,single_fact,en,True,True,2,0,0,False,0.0,0.6924252510070801,69462,1679,99,0.0,abstention : aucune citation retrouvée mot pour mot dans les sources,
+J06,single_fact,en,True,True,2,0,0,False,0.0,0.9614333510398865,46899,1666,214,0.0,abstention : aucune citation retrouvée mot pour mot dans les sources,
+PA2,paraphrase,fr,True,False,2,1,1,True,1.0,0.9264751672744751,40774,1850,75,0.0,,117 million people [S1]
+PA4,paraphrase,fr,True,False,2,1,1,True,1.0,0.9872614145278931,40217,1700,238,0.0,,"Je suis en train de tourner 44 ans le mois prochain, et j'ai le sentiment que 44 sera une très bonne année, une année de réalisation, de satisfaction. J'ai ce sentiment, pas à cause de quelque chose de particulier qui m'attend, mais parce que j'avais lu que c'était une bonne année dans un livre de 1968 par Norman Mailer. Il estimait que son propre âge, 44 ans, lui permettait d'incarner solidement l'os, le muscle, le cœur, l'esprit et le sentiment, comme s'il avait atteint sa pleine maturité [S1]"
+F01,false_premise,fr,True,True,2,0,0,False,0.0,0.34234392642974854,36959,1564,74,0.0,abstention : aucune citation retrouvée mot pour mot dans les sources,
+F02,false_premise,en,True,True,2,0,0,False,0.0,0.10848294943571091,34773,1840,114,0.0,abstention : aucune citation retrouvée mot pour mot dans les sources,
+I01,injection,en,True,True,2,0,0,False,0.0,0.22136543691158295,31442,1758,88,0.0,abstention : aucune citation retrouvée mot pour mot dans les sources,
+U03,unanswerable,fr,False,True,1,0,0,False,0.0,0.0873778760433197,9122,87,20,0.0,abstention avant génération : score 0.09 < seuil 0.1,
+U06,unanswerable,en,False,True,2,0,0,False,0.0,0.8716104030609131,29813,1748,75,0.0,abstention : aucune citation retrouvée mot pour mot dans les sources,
+U07,unanswerable,fr,False,True,1,0,0,False,0.0,0.03281025215983391,8846,75,14,0.0,abstention avant génération : score 0.03 < seuil 0.1,
+U08,unanswerable,en,False,False,2,1,1,False,0.0,0.9203164577484131,27688,1834,62,0.0,,generic facial recognition software [S1]
